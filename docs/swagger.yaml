@@ -1,0 +1,291 @@
+basePath: /
+definitions:
+  page.Page:
+    properties:
+      categories:
+        items:
+          type: string
+        type: array
+      created_at:
+        type: string
+      delete:
+        description: soft delete 用のフィールド
+        type: boolean
+      description:
+        type: string
+      details:
+        additionalProperties: {}
+        description: |-
+          詳細を map[string]any で持つことで、カスタムな情報を持たせることができる
+          入れ子にすることも可能、ただし、入れ子にする場合は、構造体を定義して、それを使うことを推奨
+        type: object
+      id:
+        type: string
+      slug:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  utils.ResponseData:
+    properties:
+      message:
+        type: string
+      result:
+        description: 必要な型を内包するため、any型を使用
+      status:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server and postman server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Micro API Server
+  version: 0.0.1
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: /health エンドポイントハンドラー
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: result
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: /health エンドポイントハンドラー
+      tags:
+      - health
+  /page:
+    delete:
+      consumes:
+      - application/json
+      description: '"ページ情報を削除するためのエンドポイントハンドラー"'
+      parameters:
+      - description: 削除するpage idを指定します。
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ステータスコードとメッセージのみ返却されます
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+        "400":
+          description: page bodyが指定されていない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+        "500":
+          description: ページが削除できない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: '"Delete エンドポイントハンドラー"'
+      tags:
+      - page
+    post:
+      consumes:
+      - application/json
+      description: '"ページ情報を保存するためのエンドポイントハンドラー"'
+      parameters:
+      - description: 保存するpage情報を指定します。
+        in: body
+        name: page
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 保存データはresultに格納され、返却されます
+          schema:
+            $ref: '#/definitions/page.Page'
+        "400":
+          description: page bodyが指定されていない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+        "500":
+          description: ページが保存できない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: '"Post エンドポイントハンドラー"'
+      tags:
+      - page
+    put:
+      consumes:
+      - application/json
+      description: '"ページ情報を更新するためのエンドポイントハンドラー"'
+      parameters:
+      - description: 更新するpage情報を指定します。
+        in: body
+        name: page
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新データはresultに格納され、返却されます
+          schema:
+            $ref: '#/definitions/page.Page'
+        "400":
+          description: page bodyが指定されていない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+        "500":
+          description: ページが更新できない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: '"Put エンドポイントハンドラー"'
+      tags:
+      - page
+  /page/{id}:
+    get:
+      consumes:
+      - application/json
+      description: '"ページ情報を取得するためのエンドポイントハンドラー"'
+      parameters:
+      - description: 取得するpage idを指定します。
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 取得データはresultに格納されます。
+          schema:
+            $ref: '#/definitions/page.Page'
+        "400":
+          description: idが指定されていない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+        "404":
+          description: ページが見つからない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: '"Get エンドポイントハンドラー"'
+      tags:
+      - page
+  /pages:
+    get:
+      consumes:
+      - application/json
+      description: '"ページ情報群を取得するためのエンドポイントハンドラー"'
+      parameters:
+      - description: "取得するページ数を指定します。\tデフォルトは10です。"
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 取得データはresultに格納されます。
+          schema:
+            items:
+              $ref: '#/definitions/page.Page'
+            type: array
+        "400":
+          description: idが指定されていない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+        "404":
+          description: ページが見つからない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: '"Get Pages エンドポイントハンドラー"'
+      tags:
+      - pages
+  /pages/export:
+    get:
+      consumes:
+      - application/json
+      description: '"ページ情報群を取得するためのエンドポイントハンドラー"'
+      parameters:
+      - description: "取得するページ数を指定します。\tデフォルトは10です。"
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 取得データはresultに格納されます。
+          schema:
+            type: header
+        "400":
+          description: idが指定されていない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+        "404":
+          description: ページが見つからない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: '"Get Pages エンドポイントハンドラー"'
+      tags:
+      - pages/export
+  /pages/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: '"ページ情報を一括保存するためのエンドポイントハンドラー"'
+      parameters:
+      - description: 保存するpage情報群が記載されたCSVファイルを指定します。
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "201":
+          description: 保存データはresultに格納され、返却されます
+          schema:
+            items:
+              $ref: '#/definitions/page.Page'
+            type: array
+        "400":
+          description: page bodyが指定されていない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+        "500":
+          description: ページが保存できない場合に返却されます。
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: '"Post エンドポイントハンドラー"'
+      tags:
+      - pages/import
+  /skeleton:
+    get:
+      consumes:
+      - application/json
+      description: /skeleton エンドポイントハンドラー
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: result
+          schema:
+            $ref: '#/definitions/utils.ResponseData'
+      summary: /skeleton エンドポイントハンドラー
+      tags:
+      - skeleton
+swagger: "2.0"

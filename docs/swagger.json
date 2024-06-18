@@ -1,0 +1,437 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server and postman server.",
+        "title": "Micro API Server",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "0.0.1"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/health": {
+            "get": {
+                "description": "/health エンドポイントハンドラー",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "health"
+                ],
+                "summary": "/health エンドポイントハンドラー",
+                "responses": {
+                    "200": {
+                        "description": "result",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/page": {
+            "put": {
+                "description": "\"ページ情報を更新するためのエンドポイントハンドラー\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "page"
+                ],
+                "summary": "\"Put エンドポイントハンドラー\"",
+                "parameters": [
+                    {
+                        "description": "更新するpage情報を指定します。",
+                        "name": "page",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "更新データはresultに格納され、返却されます",
+                        "schema": {
+                            "$ref": "#/definitions/page.Page"
+                        }
+                    },
+                    "400": {
+                        "description": "page bodyが指定されていない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    },
+                    "500": {
+                        "description": "ページが更新できない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "\"ページ情報を保存するためのエンドポイントハンドラー\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "page"
+                ],
+                "summary": "\"Post エンドポイントハンドラー\"",
+                "parameters": [
+                    {
+                        "description": "保存するpage情報を指定します。",
+                        "name": "page",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "保存データはresultに格納され、返却されます",
+                        "schema": {
+                            "$ref": "#/definitions/page.Page"
+                        }
+                    },
+                    "400": {
+                        "description": "page bodyが指定されていない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    },
+                    "500": {
+                        "description": "ページが保存できない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "\"ページ情報を削除するためのエンドポイントハンドラー\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "page"
+                ],
+                "summary": "\"Delete エンドポイントハンドラー\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "削除するpage idを指定します。",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ステータスコードとメッセージのみ返却されます",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    },
+                    "400": {
+                        "description": "page bodyが指定されていない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    },
+                    "500": {
+                        "description": "ページが削除できない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/page/{id}": {
+            "get": {
+                "description": "\"ページ情報を取得するためのエンドポイントハンドラー\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "page"
+                ],
+                "summary": "\"Get エンドポイントハンドラー\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "取得するpage idを指定します。",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "取得データはresultに格納されます。",
+                        "schema": {
+                            "$ref": "#/definitions/page.Page"
+                        }
+                    },
+                    "400": {
+                        "description": "idが指定されていない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    },
+                    "404": {
+                        "description": "ページが見つからない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/pages": {
+            "get": {
+                "description": "\"ページ情報群を取得するためのエンドポイントハンドラー\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pages"
+                ],
+                "summary": "\"Get Pages エンドポイントハンドラー\"",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "取得するページ数を指定します。\tデフォルトは10です。",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "取得データはresultに格納されます。",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/page.Page"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "idが指定されていない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    },
+                    "404": {
+                        "description": "ページが見つからない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/pages/export": {
+            "get": {
+                "description": "\"ページ情報群を取得するためのエンドポイントハンドラー\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pages/export"
+                ],
+                "summary": "\"Get Pages エンドポイントハンドラー\"",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "取得するページ数を指定します。\tデフォルトは10です。",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "取得データはresultに格納されます。",
+                        "schema": {
+                            "type": "header"
+                        }
+                    },
+                    "400": {
+                        "description": "idが指定されていない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    },
+                    "404": {
+                        "description": "ページが見つからない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/pages/import": {
+            "post": {
+                "description": "\"ページ情報を一括保存するためのエンドポイントハンドラー\"",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "pages/import"
+                ],
+                "summary": "\"Post エンドポイントハンドラー\"",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "保存するpage情報群が記載されたCSVファイルを指定します。",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "保存データはresultに格納され、返却されます",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/page.Page"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "page bodyが指定されていない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    },
+                    "500": {
+                        "description": "ページが保存できない場合に返却されます。",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/skeleton": {
+            "get": {
+                "description": "/skeleton エンドポイントハンドラー",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "skeleton"
+                ],
+                "summary": "/skeleton エンドポイントハンドラー",
+                "responses": {
+                    "200": {
+                        "description": "result",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ResponseData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "page.Page": {
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "delete": {
+                    "description": "soft delete 用のフィールド",
+                    "type": "boolean"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "details": {
+                    "description": "詳細を map[string]any で持つことで、カスタムな情報を持たせることができる\n入れ子にすることも可能、ただし、入れ子にする場合は、構造体を定義して、それを使うことを推奨",
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "id": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.ResponseData": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "description": "必要な型を内包するため、any型を使用"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
